@@ -1,14 +1,14 @@
-== Build
-
-```
-$ ./mvnw clean install
-```
-
 == Prerequisites
 
 * RabbitMQ Server
 * Spring Cloud Data Flow Server
 * Spring Cloud Data Flow Shell
+
+== Build
+
+First, clone the https://github.com/markfisher/spring-cloud-function[spring-cloud-function] project and run `./mvnw clean install`.
+
+Then, clone *this* project, and do the same: `./mvnw clean install`
 
 == Register Apps in the Data Flow Shell
 
