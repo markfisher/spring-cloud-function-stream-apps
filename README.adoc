@@ -1,0 +1,46 @@
+== Build
+
+```
+$ ./mvnw clean install
+```
+
+== Prerequisites
+
+* RabbitMQ Server
+* Spring Cloud Data Flow Server
+* Spring Cloud Data Flow Shell
+
+== Register Apps in the Data Flow Shell
+
+```
+app register --name supplier --type source --uri maven://org.springframework.cloud.stream.app:supplier-source:1.0.0.BUILD-SNAPSHOT
+
+app register --name function --type processor --uri maven://org.springframework.cloud.stream.app:function-processor:1.0.0.BUILD-SNAPSHOT
+
+app register --name consumer --type sink --uri maven://org.springframework.cloud.stream.app:consumer-sink:1.0.0.BUILD-SNAPSHOT
+```
+
+== Create a Stream in the Data Flow Shell
+
+```
+stream create demo --definition
+   "supplier --lambda='()->Flux.intervalMillis(1000).map(i->\"message-\"+i)' |
+    function --lambda='f->f.map(s->s.toString().toUpperCase())' |
+    consumer --lambda='System.out::println'" --deploy
+```
+
+The log output from the `consumer` app should append an uppercase message every second:
+
+```
+MESSAGE-0
+MESSAGE-1
+MESSAGE-2
+MESSAGE-3
+MESSAGE-4
+MESSAGE-5
+MESSAGE-6
+MESSAGE-7
+MESSAGE-8
+MESSAGE-9
+...
+```
